@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Font Awesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.2/css/all.css"
+      integrity="sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="styles/styles.css" />
+    <title>We Chat</title>
+  </head>
+  <body>
+    <!-- UI code -->
+    <div class="circle1"></div>
+    <div class="circle2"></div>
+    <div class="circle3"></div>
+    <div class="circle4"></div>
+    <div class="glass">
+      <div class="dashboard">
+        <div class="user-container">
+          <div hidden id="user-pic"></div>
+          <div hidden id="user-name"></div>
+        </div>
+        <div class="sign-container">
+          <button hidden id="sign-out">Sign Out</button>
+          <button id="sign-in">
+            Sign in with
+            <i style="margin-left: 5px" class="fab fa-google"></i>
+          </button>
+        </div>
+      </div>
+      <div class="message-card-container">
+        <div id="messages"></div>
+        <div class="input-container">
+          <form id="message-form" action="#">
+            <!-- <label for="message">Message...</label> -->
+            <input type="text" id="message" autocomplete="off" />
+            <button id="submit" type="submit">Send</button>
+          </form>
+          <form action="#" id="image-form">
+            <input
+              type="file"
+              accept="image/*"
+              capture="camera"
+              id="mediaCapture"
+            />
+            <button id="submitImage" title="Add an image">
+              <i class="fas fa-images"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="scripts/main.js"></script>
+  </body>
+</html>
