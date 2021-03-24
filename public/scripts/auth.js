@@ -28,10 +28,16 @@ function addSizeToGoogleProfilePic(url) {
 }
 
 //get profile URL
-function getProfilePicUrl() {}
+function getProfilePicUrl() {
+  return (
+    firebase.auth().currentUser.photoURL || "/images/profile_placeholder.png"
+  );
+}
 
 //get username of the user who is authenticated
-function getUserName() {}
+function getUserName() {
+  return firebase.auth().currentUser.displayName;
+}
 
 function authStateObserver(user) {
   //acts as a listener
@@ -63,10 +69,17 @@ function authStateObserver(user) {
 }
 
 //initialize firebase auth to listen to state changes
-function initializeFirebaseAuth() {}
+function initializeFirebaseAuth() {
+  firebase.auth().onAuthStateChanged(authStateObserver);
+}
 
 //sign in using firebase googleoauth. ensure google oauth is enabled
-function signIn() {}
+function signIn() {
+  let provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithPopup(provider);
+}
 
 //signout the user
-function signOut() {}
+function signOut() {
+  firebase.auth().signOut();
+}
