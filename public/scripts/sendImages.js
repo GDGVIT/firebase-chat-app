@@ -30,7 +30,16 @@ imageButtonElement.addEventListener("click", (e) => {
 mediaCaptureElement.addEventListener("change", onMediaFileSelected);
 
 //-----------------functions-----------------------
-function checkSignedInWithMessage() {}
+function checkSignedInWithMessage() {
+  // Return true if the user is signed in Firebase
+  console.log("Check auth");
+  if (firebase.auth().currentUser) {
+    console.log("authenticated!");
+    return true;
+  }
+  window.alert("You must sign in first");
+  return false;
+}
 
 function onMediaFileSelected(event) {
   event.preventDefault();
@@ -47,4 +56,36 @@ function onMediaFileSelected(event) {
 }
 
 //create temporary message on firestore until image is uploaded and then update it
-function saveImageMessage(file) {}
+function saveImageMessage(file) {
+  firebase
+    .firestore()
+    .collection("messages")
+    .add({
+      name: getUserName(),
+      imageUrl: "https://www.google.com/images/spin-32.gif?a", //loading url
+      profilePicUrl: getProfilePicUrl(),
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    })
+    .then(function (messageRef) {
+      let filePath =
+        firebase.auth().currentUser.uid + "/" + messageRef.id + "/" + file.name;
+      return firebase
+        .storage()
+        .ref(filePath)
+        .put(file)
+        .then(function (fileSnapshot) {
+          return fileSnapshot.ref.getDownloadURL().then((url) => {
+            return messageRef.update({
+              imageUrl: url,
+              storageUri: fileSnapshot.metadata.fullPath,
+            });
+          });
+        });
+    })
+    .catch(function (error) {
+      console.error(
+        "There was an error uploading a file to Cloud Storage: ",
+        error
+      );
+    });
+}
