@@ -60,12 +60,31 @@
       </div>
     </div>
 
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
     <!-- Firebase SDK's -->
-    <!-- <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-storage.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-performance.js"></script>
-     -->
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyDbdZIavwrK68xazGu8Jk3E3os2GjLHn5k",
+        authDomain: "hyperionx-13bf7.firebaseapp.com",
+        projectId: "hyperionx-13bf7",
+        storageBucket: "hyperionx-13bf7.appspot.com",
+        messagingSenderId: "746348057086",
+        appId: "1:746348057086:web:de97a60d7510847e8c70af",
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
 
     <!-- Using Firebase services -->
     <script src="scripts/auth.js"></script>
