@@ -18,6 +18,6 @@ checkSetup();
 
 initializeFirebaseAuth();
 
-// firebase.performance();
+firebase.performance();
 
 loadMessages();
