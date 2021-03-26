@@ -30,8 +30,6 @@ imageButtonElement.addEventListener("click", (e) => {
 mediaCaptureElement.addEventListener("change", onMediaFileSelected);
 
 //-----------------functions-----------------------
-function checkSignedInWithMessage() {}
-
 function onMediaFileSelected(event) {
   event.preventDefault();
   let file = event.target.files[0];
