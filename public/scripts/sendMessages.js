@@ -35,10 +35,7 @@ function toggleButton() {
 function onMessageFormSubmit(e) {
   e.preventDefault();
   if (messageInputElement.value && checkSignedInWithMessage()) {
-    saveMessage(messageInputElement.value).then(function () {
-      messageInputElement.value = "";
-      toggleButton();
-    });
+    saveMessage(messageInputElement.value);
   }
 }
 
