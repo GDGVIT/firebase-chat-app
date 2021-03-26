@@ -9,33 +9,36 @@
 // This first saves the image in Firebase storage.
 function saveImageMessage(file) {
   // TODO 9: Posts a new image as a message.
-  firebase
-    .firestore()
-    .collection("messages")
-    .add({
-      name: getUserName(),
-      imageUrl: LOADING_IMAGE_URL,
-      profilePicUrl: getProfilePicUrl(),
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    })
+  const db = firebase.firestore().collection("messages");
+  db.add({
+    name: getUserName(),
+    imageUrl: LOADING_IMAGE_URL,
+    profilePicUrl: getProfilePicUrl(),
+    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+  })
     .then(function (messageRef) {
-      let filePath =
+      const filePath =
         firebase.auth().currentUser.uid + "/" + messageRef.id + "/" + file.name;
-      return firebase
-        .storage()
-        .ref(filePath)
-        .put(file)
-        .then(function (fileSnapshot) {
-          return fileSnapshot.ref.getDownloadURL().then((url) => {
-            return messageRef.update({
+
+      const fileRef = firebase.storage().ref(filePath).put(file);
+
+      fileRef.then(function (fileSnapshot) {
+        const getUrl = fileSnapshot.ref.getDownloadURL();
+
+        getUrl.then((url) => {
+          messageRef
+            .update({
               imageUrl: url,
               storageUri: fileSnapshot.metadata.fullPath,
+            })
+            .then(function () {
+              console.log("Image has been added and updated in firestore!");
             });
-          });
         });
+      });
     })
     .catch(function (error) {
-      console.error(
+      console.log(
         "There was an error uploading a file to Cloud Storage: ",
         error
       );
