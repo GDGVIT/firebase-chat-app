@@ -30,16 +30,6 @@ imageButtonElement.addEventListener("click", (e) => {
 mediaCaptureElement.addEventListener("change", onMediaFileSelected);
 
 //-----------------functions-----------------------
-function checkSignedInWithMessage() {
-  // Return true if the user is signed in Firebase
-  console.log("Check auth");
-  if (firebase.auth().currentUser) {
-    console.log("authenticated!");
-    return true;
-  }
-  window.alert("You must sign in first");
-  return false;
-}
 
 function onMediaFileSelected(event) {
   event.preventDefault();
@@ -57,33 +47,36 @@ function onMediaFileSelected(event) {
 
 //create temporary message on firestore until image is uploaded and then update it
 function saveImageMessage(file) {
-  firebase
-    .firestore()
-    .collection("messages")
-    .add({
-      name: getUserName(),
-      imageUrl: "https://www.google.com/images/spin-32.gif?a", //loading url
-      profilePicUrl: getProfilePicUrl(),
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    })
+  const db = firebase.firestore().collection("messages");
+  db.add({
+    name: getUserName(),
+    imageUrl: LOADING_IMAGE_URL,
+    profilePicUrl: getProfilePicUrl(),
+    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+  })
     .then(function (messageRef) {
-      let filePath =
+      const filePath =
         firebase.auth().currentUser.uid + "/" + messageRef.id + "/" + file.name;
-      return firebase
-        .storage()
-        .ref(filePath)
-        .put(file)
-        .then(function (fileSnapshot) {
-          return fileSnapshot.ref.getDownloadURL().then((url) => {
-            return messageRef.update({
+
+      const fileRef = firebase.storage().ref(filePath).put(file);
+
+      fileRef.then(function (fileSnapshot) {
+        const getUrl = fileSnapshot.ref.getDownloadURL();
+
+        getUrl.then((url) => {
+          messageRef
+            .update({
               imageUrl: url,
               storageUri: fileSnapshot.metadata.fullPath,
+            })
+            .then(function () {
+              console.log("Image has been added and updated in firestore!");
             });
-          });
         });
+      });
     })
     .catch(function (error) {
-      console.error(
+      console.log(
         "There was an error uploading a file to Cloud Storage: ",
         error
       );
