@@ -54,17 +54,19 @@ function onMessageFormSubmit(e) {
 
 //add message on firestore messages collection
 function saveMessage(messageText) {
-  console.log("Saving the message onto firestore...");
-  return firebase
-    .firestore()
-    .collection("messages")
-    .add({
-      name: getUserName(),
-      text: messageText,
-      profilePicUrl: getProfilePicUrl(),
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+  const db = firebase.firestore().collection("messages");
+  db.add({
+    name: getUserName(),
+    text: messageText,
+    profilePicUrl: getProfilePicUrl(),
+    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+  })
+    .then(function () {
+      console.log("Data has been added on firestore");
+      messageInputElement.value = "";
+      toggleButton();
     })
-    .catch((err) =>
-      console.log("Error writing new message to database", error)
-    );
+    .catch(function (err) {
+      console.log(err);
+    });
 }
